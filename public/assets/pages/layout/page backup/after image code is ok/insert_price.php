@@ -1,0 +1,190 @@
+
+
+
+
+
+
+<?php
+// Database connection settings
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "nazrul4";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+  die("Connection failed: " . $conn->connect_error);
+}
+
+// Prepare and bind the SQL statement
+$stmt = $conn->prepare("INSERT INTO pricetable (price_bricks, price_send, price_rode, price_ciment, price_stone, others_price_1, others_price_2, others_price_3, image1, image2) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+$stmt->bind_param("iiiiisssss", $price_bricks, $price_send, $price_rode, $price_ciment, $price_stone, $others_price_1, $others_price_2, $others_price_3, $image1, $image2);
+
+// Set parameter values
+$price_bricks = $_POST['price_bricks'];
+$price_send = $_POST['price_send'];
+$price_rode = $_POST['price_rode'];
+$price_ciment = $_POST['price_ciment'];
+$price_stone = $_POST['price_stone'];
+$others_price_1 = $_POST['others_price_1'];
+$others_price_2 = $_POST['others_price_2'];
+$others_price_3 = $_POST['others_price_3'];
+$image1 = $_FILES['image1']['name'];
+$image2 = $_FILES['image2']['name'];
+
+// Upload images
+$target_dir = "uploads/";
+$target_file1 = $target_dir . basename($_FILES["image1"]["name"]);
+$target_file2 = $target_dir . basename($_FILES["image2"]["name"]);
+move_uploaded_file($_FILES["image1"]["tmp_name"], $target_file1);
+move_uploaded_file($_FILES["image2"]["tmp_name"], $target_file2);
+
+// Execute the SQL statement
+if ($stmt->execute() === TRUE) {
+  echo "New record created successfully";
+} else {
+  echo "Error: " . $stmt->error;
+}
+
+// Close connection
+$conn->close();
+?>
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--<link rel="stylesheet" href="jquery.datetimepicker.min.css"> -->
+    <title>TMS</title>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="jquery-ui.min.css">
+  </head>
+  <br>
+
+
+	  
+  <br>
+   <body>
+    <section>
+    <div class="container">
+	 <div class="row clearfix">
+	  <div class="row">
+     <br>
+      <!--Back Button start-->	 
+	  <div class="col-lg-1">
+         <a href="dashboard.php" class="btn btn-success btn-sm">Back</a>	    	
+	  </div>
+     <!--Back Button close-->
+	   </section>
+	   </br>
+	  
+	  <!--Regestration Section start-->
+	  <section>
+	 <div class="col-lg-12 col-md-12 mb-12">
+	  <div class="card row align-items-center">
+	   <div class="card-body">
+        <div class="table-responsive">
+	      <div class="col-lg-12 col-md-12 mb-12">
+	      <div class="card row align-items-center">
+	       <div class="card-body">
+			   <h6 class="text-center textalign-center font-weight-bold deep-orange-lighter-hover align-items-center">Insert price</h6>
+				<table class="table table-bordered  table-striped table-hover ">
+				<form action="" method="POST" enctype="multipart/form-data">
+				<tr>
+				  <th class="text-left text-nowrap small">  bricks </th>
+				  <td><input type="text" name="price_bricks" class="form-control" required></td>
+				</tr>
+				<tr>
+				  <th class="text-left text-nowrap small">  sand </th>
+				  <td><input type="text" name="price_send" class="form-control" required></td>
+				</tr>
+				<tr>
+				  <th class="text-left text-nowrap small">  rode</th>
+				  <td><input type="text" name="price_rode" class="form-control" required></td>
+				</tr>
+				
+				<tr>
+				  <th class="text-left text-nowrap small">  price ciment </th>
+				  <td><input type="text" name="price_ciment" class="form-control" required></td>
+				</tr>
+				<tr>
+				  <th class="text-left text-nowrap small">stone </th>
+				  <td><input type="text" name="price_stone" class="form-control" required></td>
+				</tr>
+				</table>
+				<table class="table table-bordered  table-striped table-hover ">
+				<tr>
+				  <th class=" text-left text-nowrap small">other price </th>
+				</tr>
+				<td class=""><input type="text" name="others_price_1" class="form-control" required></td
+				<tr>
+				  <th class="text-left text-nowrap small"> other price2
+				<td><input type="text" name="others_price_2" class="form-control" required></td>
+				</tr>
+				<tr>
+				  <th class="text-left text-nowrap small"> other price 3</th>
+				  <td><input type="text" name="others_price_3" class="form-control" required></td>
+				</tr>
+				
+				
+				
+				<tr>
+                <td>Image 1:</td>
+                <td><input type="file" name="image1"></td>
+				</tr>
+				<tr>
+					<td>Image 2:</td>
+					<td><input type="file" name="image2"></td>
+				</tr>
+
+				 <tr> 
+				  <th class="text-left"></th>
+				  <td><input class="btn btn-success" type="submit" value="submit" </td>
+				</tr>
+			</form>
+		</table>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  </div>
+	  </section>
+	 <!--Regestration Section End-->
+
+	   </div>
+	  </div>
+	 </div>
+    <br><br>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+	<script src="jquery-3.4.1.min.js"></script>
+	<script src="jquery-ui.min.js"></script>
+	<script>
+	$(document).ready( function(){
+		$('#datepicker').datepicker({
+			dateFormat: "dd-mm-yy",
+			changeMonth: true,
+			changeYear: true
+		});
+	})
+	</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
